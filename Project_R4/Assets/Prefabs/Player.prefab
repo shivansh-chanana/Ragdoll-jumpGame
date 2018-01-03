@@ -111,8 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fdbd8f546a39bf4e9eedeca38112549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 200
-  upForce: {x: 0, y: 0, z: 200}
+  moveForce: {x: 0, y: 0, z: 0}
+  jumpForce: {x: 0, y: 0, z: 0}
   rb: {fileID: 54952822547267016}
 --- !u!136 &136764388649858412
 CapsuleCollider:
