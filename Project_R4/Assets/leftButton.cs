@@ -11,10 +11,6 @@ public class leftButton : MonoBehaviour {
 	public controllerForce cF;
 
 	public void OnPointerDown(){
-		cF.leftEnabled ();
-	}
-
-	public void OnPointerUp(){
-		cF.leftDisabled ();
+		cF.jump ();
 	}
 }
