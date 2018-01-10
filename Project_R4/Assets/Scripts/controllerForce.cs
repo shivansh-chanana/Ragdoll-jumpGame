@@ -13,6 +13,10 @@ public class controllerForce : MonoBehaviour {
 
 	private bool colWithWalls = false;
 
+	public bool death = false;
+
+	private float delayTime = 2f;
+
 	#endregion
 
 	void Start ()	 {
@@ -23,10 +27,11 @@ public class controllerForce : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Space)) jump ();
 	}
 	void FixedUpdate () {
-		rb.AddTorque (-moveForce * Time.deltaTime * 60);
+		if(!death) rb.AddTorque (-moveForce * Time.deltaTime * 60);
 	}
 
 	#region Collision Stuff
+
 	void OnTriggerEnter(Collider triggerTarget){
 		if (triggerTarget.tag == "Walls") {
 			Debug.Log ("CAN jump Now");
@@ -34,7 +39,7 @@ public class controllerForce : MonoBehaviour {
 		}
 
 		if (triggerTarget.tag == "Finish") {
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+			reSpawn ();
 		}
 	}
 
@@ -49,10 +54,33 @@ public class controllerForce : MonoBehaviour {
 			Debug.Log ("CANNOT jump Now");
 			colWithWalls = false;
 	}
+
+	void OnCollisionEnter(Collision collisionTarget)
+	{
+		//COLLISION WITH GAMEOVER OBJECT TAG
+		if (collisionTarget.gameObject.name =="peopleLying") {
+			Debug.Log ("Start Coroutine");
+			StartCoroutine (gameOver (delayTime)); 
+		}
+	}
+
 	#endregion
 
 	public void jump(){
-		if(colWithWalls) rb.AddForce (jumpForce * Time.deltaTime * 60,ForceMode.Impulse);
+		if(colWithWalls && !death) rb.AddForce (jumpForce * Time.fixedDeltaTime * 60,ForceMode.Impulse);
 	}
 
+	IEnumerator gameOver(float delayTime){
+	
+		death = true;
+
+		Debug.Log("GameOver Buddy");
+		yield return new WaitForSeconds (delayTime);
+
+		reSpawn ();
+	}
+
+	void reSpawn(){
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+	}
 }
