@@ -8,6 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/UI/Scenes/Base_Prefabs.unity
     guid: 59de0264f807f2a4b8361a311618db51
-  - enabled: 1
-    path: Assets/UI/Scenes/Level_Base.unity
-    guid: 7d280716ca7e78c43998143699a8eccd
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000

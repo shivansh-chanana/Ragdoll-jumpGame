@@ -13,11 +13,14 @@ public class controllerForce : MonoBehaviour {
 
 	private bool colWithWalls = false;
 
-	public bool death = false;
+	public static bool death = false;
 
-	private float delayTime = 2f;
 
 	#endregion
+
+	void Awake(){
+		reset ();
+	}
 
 	void Start ()	 {
 		rb = GetComponent<Rigidbody> ();
@@ -25,9 +28,12 @@ public class controllerForce : MonoBehaviour {
 		
 	void Update(){
 		if (Input.GetKeyDown (KeyCode.Space)) jump ();
+		//if (Input.GetKeyDown (KeyCode.Z))
+			//rb.AddForce (5, 0, 0,ForceMode.Impulse);
 	}
+
 	void FixedUpdate () {
-		if(!death) rb.AddTorque (-moveForce * Time.deltaTime * 60);
+		if(!death) rb.AddTorque (-moveForce*Time.fixedDeltaTime * 60);
 	}
 
 	#region Collision Stuff
@@ -54,33 +60,23 @@ public class controllerForce : MonoBehaviour {
 			Debug.Log ("CANNOT jump Now");
 			colWithWalls = false;
 	}
-
-	void OnCollisionEnter(Collision collisionTarget)
-	{
-		//COLLISION WITH GAMEOVER OBJECT TAG
-		if (collisionTarget.gameObject.name =="peopleLying") {
-			Debug.Log ("Start Coroutine");
-			StartCoroutine (gameOver (delayTime)); 
-		}
-	}
-
+		
 	#endregion
 
 	public void jump(){
-		if(colWithWalls && !death) rb.AddForce (jumpForce * Time.fixedDeltaTime * 60,ForceMode.Impulse);
+		if(colWithWalls && !death) rb.AddForce (jumpForce*Time.fixedDeltaTime * 60,ForceMode.Impulse);
+	}
+		
+	void reset(){
+		//Resets things
+		death = false;
 	}
 
-	IEnumerator gameOver(float delayTime){
-	
-		death = true;
-
-		Debug.Log("GameOver Buddy");
-		yield return new WaitForSeconds (delayTime);
-
-		reSpawn ();
-	}
-
-	void reSpawn(){
+	public void reSpawn(){
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+	}
+
+	public void check(){
+		Debug.Log ("Reference working");
 	}
 }
