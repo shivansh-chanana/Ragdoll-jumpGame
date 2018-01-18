@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class controllerForce : MonoBehaviour {
@@ -11,10 +12,13 @@ public class controllerForce : MonoBehaviour {
 
 	public Rigidbody rb;
 
+	public Text pauseText;
+
 	private bool colWithWalls = false;
 
 	public static bool death = false;
 
+	public static bool paused = false;
 
 	#endregion
 
@@ -28,6 +32,8 @@ public class controllerForce : MonoBehaviour {
 		
 	void Update(){
 		if (Input.GetKeyDown (KeyCode.Space)) jump ();
+		if (Input.GetKeyDown (KeyCode.Z) && paused == false) pausedMethod ();
+		if (Input.GetKeyDown (KeyCode.X) && paused == true) resume ();	
 		//if (Input.GetKeyDown (KeyCode.Z))
 			//rb.AddForce (5, 0, 0,ForceMode.Impulse);
 	}
@@ -67,9 +73,22 @@ public class controllerForce : MonoBehaviour {
 		if(colWithWalls && !death) rb.AddForce (jumpForce*Time.fixedDeltaTime * 60,ForceMode.Impulse);
 	}
 		
+	void pausedMethod(){
+		pauseText.enabled = true;
+		paused = true;
+		Time.timeScale = 0;
+			}
+
+	void resume(){
+		pauseText.enabled = false;
+		paused = false;
+		Time.timeScale = 1f;
+	}
+
 	void reset(){
 		//Resets things
 		death = false;
+		pauseText.enabled = false;
 	}
 
 	public void reSpawn(){
