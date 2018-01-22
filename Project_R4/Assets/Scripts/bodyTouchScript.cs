@@ -8,7 +8,7 @@ public class bodyTouchScript : MonoBehaviour {
 
 	public float slowMoWait = 0f;
 
-	void OnCollisionEnter(Collision collisionTarget)
+	void OnCollisionEnter2D(Collision2D collisionTarget)
 	{
 		
 		//COLLISION WITH GAMEOVER OBJECT TAG

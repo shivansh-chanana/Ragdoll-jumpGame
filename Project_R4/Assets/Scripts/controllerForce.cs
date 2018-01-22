@@ -7,14 +7,14 @@ using UnityEngine.SceneManagement;
 public class controllerForce : MonoBehaviour {
 
 	#region Variables Initialize
-	public Vector3 moveForce = new Vector3 (0, 0, 0);
-	public Vector3 jumpForce = new Vector3 (0, 0, 0);
+	public float moveForce = 0f;
+	public float jumpForce = 0f;
 
-	public Rigidbody rb;
+	public Rigidbody2D rb;
 
 	public Text pauseText;
 
-	private bool colWithWalls = false;
+	public bool colWithWalls = false;
 
 	public static bool death = false;
 
@@ -27,11 +27,11 @@ public class controllerForce : MonoBehaviour {
 	}
 
 	void Start ()	 {
-		rb = GetComponent<Rigidbody> ();
+		rb = GetComponent<Rigidbody2D> ();
 	}
 		
 	void Update(){
-		if (Input.GetKeyDown (KeyCode.Space)) jump ();
+	//	if (Input.GetKeyDown (KeyCode.Space)) jump ();
 		if (Input.GetKeyDown (KeyCode.Z) && paused == false) pausedMethod ();
 		if (Input.GetKeyDown (KeyCode.X) && paused == true) resume ();	
 		//if (Input.GetKeyDown (KeyCode.Z))
@@ -39,12 +39,13 @@ public class controllerForce : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		if(!death) rb.AddTorque (-moveForce*Time.fixedDeltaTime * 60);
+		//if (!death)
+			//rb.AddTorque (-moveForce);//*Time.fixedDeltaTime * 60);
 	}
 
 	#region Collision Stuff
 
-	void OnTriggerEnter(Collider triggerTarget){
+	void OnTriggerEnter2D(Collider2D triggerTarget){
 		if (triggerTarget.tag == "Walls") {
 			Debug.Log ("CAN jump Now");
 			colWithWalls = true;
@@ -55,22 +56,25 @@ public class controllerForce : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerStay(Collider triggerTarget){
+	void OnTriggerStay2D(Collider2D triggerTarget){
 		if (triggerTarget.tag == "Walls") {
 			Debug.Log ("CAN jump Now");
 			colWithWalls = true;
 		}
 	}
 
-	void OnTriggerExit(Collider triggerTarget){
+	void OnTriggerExit2D(Collider2D triggerTarget){
 			Debug.Log ("CANNOT jump Now");
 			colWithWalls = false;
 	}
 		
 	#endregion
 
+	#region Other Methods
+
 	public void jump(){
-		if(colWithWalls && !death) rb.AddForce (jumpForce*Time.fixedDeltaTime * 60,ForceMode.Impulse);
+		if(colWithWalls && !death) rb.AddForce
+			(transform.up * jumpForce * Time.fixedDeltaTime * 60,ForceMode2D.Impulse);
 	}
 		
 	void pausedMethod(){
@@ -98,4 +102,8 @@ public class controllerForce : MonoBehaviour {
 	public void check(){
 		Debug.Log ("Reference working");
 	}
+
+	#endregion
 }
+
+
